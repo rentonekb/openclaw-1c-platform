@@ -1,0 +1,7 @@
+{
+  "id": "repository-manager",
+  "name": "Repository Manager",
+  "type": "static",
+  "description": "Клонирование репозитория и синхронизация конфигураций",
+  "entrypoint": "sync.sh"
+}

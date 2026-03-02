@@ -1,0 +1,11 @@
+services:
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    restart: unless-stopped
+    networks:
+      - openclaw-net
+
+networks:
+  openclaw-net:
+    driver: bridge

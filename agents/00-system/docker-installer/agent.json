@@ -1,0 +1,7 @@
+{
+  "id": "docker-installer",
+  "name": "Docker Installer",
+  "type": "static",
+  "description": "Установка Docker CE и Docker Compose",
+  "entrypoint": "scripts/install.sh"
+}

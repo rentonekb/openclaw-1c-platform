@@ -1,0 +1,7 @@
+{
+  "id": "system-setup",
+  "name": "System Setup",
+  "type": "static",
+  "description": "Настройка ОС: sysctl, ulimits, swap",
+  "entrypoint": "setup.sh"
+}

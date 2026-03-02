@@ -1,0 +1,11 @@
+services:
+  clickhouse:
+    image: clickhouse:latest
+    container_name: clickhouse
+    restart: unless-stopped
+    networks:
+      - openclaw-net
+
+networks:
+  openclaw-net:
+    driver: bridge

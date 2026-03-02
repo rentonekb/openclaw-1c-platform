@@ -1,0 +1,11 @@
+services:
+  gitlab:
+    image: gitlab:latest
+    container_name: gitlab
+    restart: unless-stopped
+    networks:
+      - openclaw-net
+
+networks:
+  openclaw-net:
+    driver: bridge

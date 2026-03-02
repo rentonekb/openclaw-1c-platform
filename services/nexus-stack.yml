@@ -1,0 +1,11 @@
+services:
+  nexus:
+    image: nexus:latest
+    container_name: nexus
+    restart: unless-stopped
+    networks:
+      - openclaw-net
+
+networks:
+  openclaw-net:
+    driver: bridge

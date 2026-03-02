@@ -1,0 +1,11 @@
+services:
+  grafana:
+    image: grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    networks:
+      - openclaw-net
+
+networks:
+  openclaw-net:
+    driver: bridge

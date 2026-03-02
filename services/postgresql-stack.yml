@@ -1,0 +1,11 @@
+services:
+  postgresql:
+    image: postgresql:latest
+    container_name: postgresql
+    restart: unless-stopped
+    networks:
+      - openclaw-net
+
+networks:
+  openclaw-net:
+    driver: bridge
