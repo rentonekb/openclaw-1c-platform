@@ -1,0 +1,7 @@
+{
+  "id": "founder",
+  "name": "OpenClaw Founder Orchestrator",
+  "type": "static",
+  "description": "Оркестратор фаз и агентов OpenClaw 1C Platform VCP",
+  "entrypoint": "run.py"
+}

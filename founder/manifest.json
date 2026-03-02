@@ -1,1 +1,318 @@
-{"version":"1.0.0","name":"OpenClaw 1C Platform VCP","description":"Полная платформа мониторинга 1С с 31 агентом","phases":[{"id":"phase-0-system","name":"Подготовка системы","order":0,"agents":[{"id":"docker-installer","source":"agents/00-system/docker-installer","type":"static"},{"id":"system-setup","source":"agents/00-system/system-setup","type":"static"},{"id":"repository-manager","source":"agents/00-system/repository-manager","type":"static"}],"gates":["docker version >= 24.0","portainer http://localhost:9000"]},{"id":"phase-1-infrastructure","name":"Инфраструктура","order":1,"agents":[{"id":"git-coordinator","template":"infrastructure-agent","params":{"name":"Git Coordinator","description":"Версионирование конфигураций"}},{"id":"openclaw-optimizer","template":"infrastructure-agent","params":{"name":"OpenClaw Optimizer","description":"Тюнинг OpenClaw"}},{"id":"db-tuner","template":"infrastructure-agent","params":{"name":"DB Tuner","description":"Оптимизация СУБД"}},{"id":"backup-manager","template":"infrastructure-agent","params":{"name":"Backup Manager","description":"Резервное копирование"}},{"id":"perfmon-configurator","template":"infrastructure-agent","params":{"name":"PerfMon Configurator","description":"Настройка Performance Monitor"}},{"id":"license-monitor","template":"infrastructure-agent","params":{"name":"License Monitor","description":"Мониторинг лицензий 1С"}},{"id":"platform-updater","template":"infrastructure-agent","params":{"name":"Platform Updater","description":"Обновление платформы 1С"}}],"services":["services/clickhouse-stack.yml","services/grafana-stack.yml","services/postgresql-stack.yml","services/gitlab-stack.yml","services/sonarqube-stack.yml","services/nexus-stack.yml"],"gates":["clickhouse http://localhost:8123/ping","grafana http://localhost:3000/api/health"]},{"id":"phase-2-devops","name":"DevOps","order":2,"agents":[{"id":"cicd-coordinator","template":"devops-agent","params":{"name":"CI/CD Coordinator","description":"CI/CD для 1С"}},{"id":"portainer-manager","template":"devops-agent","params":{"name":"Portainer Manager","description":"Управление Docker"}},{"id":"deploy-engineer","template":"devops-agent","params":{"name":"Deploy Engineer","description":"Развёртывание на серверы"}}]},{"id":"phase-3-production","name":"Продакшн","order":3,"agents":[{"id":"log-architect","template":"production-agent","params":{"name":"Log Architect","description":"Сбор логов 1С"}},{"id":"db-profiler","template":"production-agent","params":{"name":"DB Profiler","description":"Профилирование СУБД"}},{"id":"query-analyzer","template":"production-agent","params":{"name":"Query Analyzer","description":"Анализ планов запросов"}},{"id":"hardware-monitor","template":"production-agent","params":{"name":"Hardware Monitor","description":"Мониторинг железа"}},{"id":"correlation-engine","template":"production-agent","params":{"name":"Correlation Engine","description":"Корреляция событий"}},{"id":"ux-monitor","template":"production-agent","params":{"name":"UX Monitor","description":"Мониторинг пользовательского опыта"}},{"id":"pattern-analyst","template":"production-agent","params":{"name":"Pattern Analyst","description":"Анализ паттернов"}},{"id":"auto-remediator","template":"production-agent","params":{"name":"Auto Remediator","description":"Автоматическое исправление"}}]},{"id":"phase-4-aiops","name":"AI и UI","order":4,"agents":[{"id":"ml-predictor","template":"aiops-agent","params":{"name":"ML Predictor","description":"ML-предсказания"}},{"id":"dashboard-generator","template":"aiops-agent","params":{"name":"Dashboard Generator","description":"Генерация веб-интерфейса"}}]},{"id":"phase-5-qa","name":"QA","order":5,"agents":[{"id":"config-validator","template":"qa-agent","params":{"name":"Config Validator","description":"Валидация конфигураций"}},{"id":"output-verifier","template":"qa-agent","params":{"name":"Output Verifier","description":"Проверка результатов"}},{"id":"security-auditor","template":"qa-agent","params":{"name":"Security Auditor","description":"Аудит безопасности"}},{"id":"db-schema-validator","template":"qa-agent","params":{"name":"DB Schema Validator","description":"Валидация схем БД"}},{"id":"correlation-tester","template":"qa-agent","params":{"name":"Correlation Tester","description":"Тестирование корреляций"}},{"id":"cicd-tester","template":"qa-agent","params":{"name":"CI/CD Tester","description":"Тестирование CI/CD"}}]},{"id":"phase-6-interface","name":"Интерфейс","order":6,"agents":[{"id":"telegram-coordinator","template":"interface-agent","params":{"name":"Telegram Coordinator","description":"Telegram-бот"}},{"id":"web-ui-engine","template":"interface-agent","params":{"name":"Web UI Engine","description":"Веб-интерфейс"}}]}],"global-config":{"domain":"{{ env.DOMAIN }}","timezone":"{{ env.TIMEZONE | default('Europe/Moscow') }}","ssl-email":"{{ env.SSL_EMAIL }}","telegram-token":"{{ secrets.TELEGRAM_TOKEN }}","db-password":"{{ secrets.DB_PASSWORD | default(random(32)) }}"}}
+{
+  "version": "1.0.0",
+  "name": "OpenClaw 1C Platform VCP",
+  "description": "Полная платформа мониторинга 1С с 31 агентом",
+  "phases": [
+    {
+      "id": "phase-0-system",
+      "name": "Подготовка системы",
+      "order": 0,
+      "agents": [
+        {
+          "id": "docker-installer",
+          "source": "agents/00-system/docker-installer",
+          "type": "static"
+        },
+        {
+          "id": "system-setup",
+          "source": "agents/00-system/system-setup",
+          "type": "static"
+        },
+        {
+          "id": "repository-manager",
+          "source": "agents/00-system/repository-manager",
+          "type": "static"
+        }
+      ],
+      "gates": [
+        "docker version >= 24.0",
+        "portainer http://localhost:9000"
+      ]
+    },
+    {
+      "id": "phase-1-infrastructure",
+      "name": "Инфраструктура",
+      "order": 1,
+      "agents": [
+        {
+          "id": "git-coordinator",
+          "template": "infrastructure-agent",
+          "params": {
+            "name": "Git Coordinator",
+            "description": "Версионирование конфигураций"
+          }
+        },
+        {
+          "id": "openclaw-optimizer",
+          "template": "infrastructure-agent",
+          "params": {
+            "name": "OpenClaw Optimizer",
+            "description": "Тюнинг OpenClaw"
+          }
+        },
+        {
+          "id": "db-tuner",
+          "template": "infrastructure-agent",
+          "params": {
+            "name": "DB Tuner",
+            "description": "Оптимизация СУБД"
+          }
+        },
+        {
+          "id": "backup-manager",
+          "template": "infrastructure-agent",
+          "params": {
+            "name": "Backup Manager",
+            "description": "Резервное копирование"
+          }
+        },
+        {
+          "id": "perfmon-configurator",
+          "template": "infrastructure-agent",
+          "params": {
+            "name": "PerfMon Configurator",
+            "description": "Настройка Performance Monitor"
+          }
+        },
+        {
+          "id": "license-monitor",
+          "template": "infrastructure-agent",
+          "params": {
+            "name": "License Monitor",
+            "description": "Мониторинг лицензий 1С"
+          }
+        },
+        {
+          "id": "platform-updater",
+          "template": "infrastructure-agent",
+          "params": {
+            "name": "Platform Updater",
+            "description": "Обновление платформы 1С"
+          }
+        }
+      ],
+      "services": [
+        "services/clickhouse-stack.yml",
+        "services/grafana-stack.yml",
+        "services/postgresql-stack.yml",
+        "services/gitlab-stack.yml",
+        "services/sonarqube-stack.yml",
+        "services/nexus-stack.yml"
+      ],
+      "gates": [
+        "clickhouse http://localhost:8123/ping",
+        "grafana http://localhost:3000/api/health"
+      ]
+    },
+    {
+      "id": "phase-2-devops",
+      "name": "DevOps",
+      "order": 2,
+      "agents": [
+        {
+          "id": "cicd-coordinator",
+          "template": "devops-agent",
+          "params": {
+            "name": "CI/CD Coordinator",
+            "description": "CI/CD для 1С"
+          }
+        },
+        {
+          "id": "portainer-manager",
+          "template": "devops-agent",
+          "params": {
+            "name": "Portainer Manager",
+            "description": "Управление Docker"
+          }
+        },
+        {
+          "id": "deploy-engineer",
+          "template": "devops-agent",
+          "params": {
+            "name": "Deploy Engineer",
+            "description": "Развёртывание на серверы"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-3-production",
+      "name": "Продакшн",
+      "order": 3,
+      "agents": [
+        {
+          "id": "log-architect",
+          "template": "production-agent",
+          "params": {
+            "name": "Log Architect",
+            "description": "Сбор логов 1С"
+          }
+        },
+        {
+          "id": "db-profiler",
+          "template": "production-agent",
+          "params": {
+            "name": "DB Profiler",
+            "description": "Профилирование СУБД"
+          }
+        },
+        {
+          "id": "query-analyzer",
+          "template": "production-agent",
+          "params": {
+            "name": "Query Analyzer",
+            "description": "Анализ планов запросов"
+          }
+        },
+        {
+          "id": "hardware-monitor",
+          "template": "production-agent",
+          "params": {
+            "name": "Hardware Monitor",
+            "description": "Мониторинг железа"
+          }
+        },
+        {
+          "id": "correlation-engine",
+          "template": "production-agent",
+          "params": {
+            "name": "Correlation Engine",
+            "description": "Корреляция событий"
+          }
+        },
+        {
+          "id": "ux-monitor",
+          "template": "production-agent",
+          "params": {
+            "name": "UX Monitor",
+            "description": "Мониторинг пользовательского опыта"
+          }
+        },
+        {
+          "id": "pattern-analyst",
+          "template": "production-agent",
+          "params": {
+            "name": "Pattern Analyst",
+            "description": "Анализ паттернов"
+          }
+        },
+        {
+          "id": "auto-remediator",
+          "template": "production-agent",
+          "params": {
+            "name": "Auto Remediator",
+            "description": "Автоматическое исправление"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-4-aiops",
+      "name": "AI и UI",
+      "order": 4,
+      "agents": [
+        {
+          "id": "ml-predictor",
+          "template": "aiops-agent",
+          "params": {
+            "name": "ML Predictor",
+            "description": "ML-предсказания"
+          }
+        },
+        {
+          "id": "dashboard-generator",
+          "template": "aiops-agent",
+          "params": {
+            "name": "Dashboard Generator",
+            "description": "Генерация веб-интерфейса"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-5-qa",
+      "name": "QA",
+      "order": 5,
+      "agents": [
+        {
+          "id": "config-validator",
+          "template": "qa-agent",
+          "params": {
+            "name": "Config Validator",
+            "description": "Валидация конфигураций"
+          }
+        },
+        {
+          "id": "output-verifier",
+          "template": "qa-agent",
+          "params": {
+            "name": "Output Verifier",
+            "description": "Проверка результатов"
+          }
+        },
+        {
+          "id": "security-auditor",
+          "template": "qa-agent",
+          "params": {
+            "name": "Security Auditor",
+            "description": "Аудит безопасности"
+          }
+        },
+        {
+          "id": "db-schema-validator",
+          "template": "qa-agent",
+          "params": {
+            "name": "DB Schema Validator",
+            "description": "Валидация схем БД"
+          }
+        },
+        {
+          "id": "correlation-tester",
+          "template": "qa-agent",
+          "params": {
+            "name": "Correlation Tester",
+            "description": "Тестирование корреляций"
+          }
+        },
+        {
+          "id": "cicd-tester",
+          "template": "qa-agent",
+          "params": {
+            "name": "CI/CD Tester",
+            "description": "Тестирование CI/CD"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-6-interface",
+      "name": "Интерфейс",
+      "order": 6,
+      "agents": [
+        {
+          "id": "telegram-coordinator",
+          "template": "interface-agent",
+          "params": {
+            "name": "Telegram Coordinator",
+            "description": "Telegram-бот"
+          }
+        },
+        {
+          "id": "web-ui-engine",
+          "template": "interface-agent",
+          "params": {
+            "name": "Web UI Engine",
+            "description": "Веб-интерфейс"
+          }
+        }
+      ]
+    }
+  ],
+  "global-config": {
+    "domain": "{{ env.DOMAIN }}",
+    "timezone": "{{ env.TIMEZONE | default('Europe/Moscow') }}",
+    "ssl-email": "{{ env.SSL_EMAIL }}",
+    "telegram-token": "{{ secrets.TELEGRAM_TOKEN }}",
+    "db-password": "{{ secrets.DB_PASSWORD | default(random(32)) }}"
+  }
+}
