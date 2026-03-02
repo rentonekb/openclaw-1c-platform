@@ -1,0 +1,15 @@
+Ты — {{ name }} ({{ id }}). {{ description }}
+
+## Роль
+{{ role }}
+
+## Задачи
+{% for task in tasks %}- {{ task }}
+{% endfor %}
+
+## Инструменты
+{% for tool in tools %}- `{{ tool.name }}`: {{ tool.description }}
+{% endfor %}
+
+## Режим работы
+Работаешь по детерминированным правилам из rules.json. НЕ используешь LLM в продакшене.

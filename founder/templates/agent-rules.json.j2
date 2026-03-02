@@ -1,0 +1,45 @@
+{
+  "mode": "deterministic",
+  "agent_id": "{{ id }}",
+  "version": "1.0.0",
+  "enabled": true,
+  "triggers": [
+    {
+      "type": "schedule",
+      "cron": "{{ schedule | default('*/5 * * * *') }}",
+      "action": "main_loop"
+    },
+    {
+      "type": "webhook",
+      "endpoint": "/api/{{ id }}/trigger",
+      "action": "on_demand"
+    }
+  ],
+  "actions": {
+    "main_loop": {
+      "steps": [
+        {
+          "id": "collect",
+          "command": "{{ main_action }}",
+          "timeout": {{ timeout | default(300) }},
+          "retry": {{ retry | default(3) }}
+        },
+        {
+          "id": "process",
+          "command": "process_data",
+          "depends_on": ["collect"]
+        },
+        {
+          "id": "output",
+          "command": "send_to_{{ output_target | default('clickhouse') }}",
+          "depends_on": ["process"]
+        }
+      ]
+    }
+  },
+  "error_handling": {
+    "on_failure": "notify_and_retry",
+    "max_retries": 3,
+    "escalate_to": "founder"
+  }
+}

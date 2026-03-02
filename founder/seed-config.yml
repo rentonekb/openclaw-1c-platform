@@ -1,0 +1,25 @@
+founder:
+  name: "OpenClaw 1C Platform Founder"
+  version: "1.0.0"
+  source:
+    type: "git"
+    url: "https://github.com/openclaw-1c-platform/openclaw-1c-platform.git"
+    branch: "main"
+  auto-update:
+    enabled: true
+    check-interval: "24h"
+required-parameters:
+  - name: "DOMAIN"
+    prompt: "Домен для веб-интерфейса (например: monitor.company.ru)"
+    validation: "fqdn"
+  - name: "SSL_EMAIL"
+    prompt: "Email для SSL-сертификата Let's Encrypt"
+    validation: "email"
+  - name: "TELEGRAM_TOKEN"
+    prompt: "Токен Telegram-бота (получить у @BotFather)"
+    validation: "telegram-token"
+    secret: true
+  - name: "TIMEZONE"
+    prompt: "Часовой пояс"
+    default: "Asia/Yekaterinburg"
+    options: ["Europe/Moscow","Europe/Samara","Asia/Yekaterinburg","Asia/Novosibirsk","Asia/Vladivostok"]

@@ -1,0 +1,30 @@
+services:
+  {{ name }}:
+    image: {{ image }}
+    container_name: {{ name }}
+    hostname: {{ name }}
+    restart: unless-stopped
+    ports:{% for port in ports %}
+      - "{{ port }}"{% endfor %}
+    volumes:{% for vol in volumes %}
+      - {{ vol }}{% endfor %}
+    networks:
+      - openclaw-net
+    healthcheck:
+      test: {{ healthcheck_test | default('["CMD", "true"]') }}
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: "{{ cpu_limit | default('1.0') }}"
+          memory: "{{ mem_limit | default('512m') }}"
+        reservations:
+          cpus: "{{ cpu_reservation | default('0.25') }}"
+          memory: "{{ mem_reservation | default('128m') }}"
+
+networks:
+  openclaw-net:
+    driver: bridge
