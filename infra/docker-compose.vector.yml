@@ -1,0 +1,18 @@
+services:
+  vector:
+    image: timberio/vector:0.53.0-distroless-libc
+    container_name: vector
+    restart: unless-stopped
+    volumes:
+      - /opt/openclaw/infra/vector/vector.yaml:/etc/vector/vector.yaml:ro
+      - vector_buffer:/var/lib/vector
+    ports:
+      - "5044:5044"
+    environment:
+      - VECTOR_LOG=info
+    extra_hosts:
+      - "clickhouse:192.168.88.36"
+
+volumes:
+  vector_buffer:
+    driver: local

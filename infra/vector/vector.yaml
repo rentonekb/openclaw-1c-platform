@@ -1,0 +1,39 @@
+sources:
+  filebeat_in:
+    type: logstash
+    address: 0.0.0.0:5044
+
+transforms:
+  to_raw_any:
+    type: remap
+    inputs:
+      - filebeat_in
+    source: |
+      orig = .
+      . = {}
+      .ts_str = format_timestamp!(now(), "%Y-%m-%d %H:%M:%S")
+      .msg    = encode_json(orig)
+
+sinks:
+  clickhouse_raw_any:
+    type: clickhouse
+    inputs:
+      - to_raw_any
+    endpoint: "http://192.168.88.36:8123"
+    database: "openclaw"
+    table: "techlog_raw_any"
+    auth:
+      strategy: "basic"
+      user: "openclaw"
+      password: "openclaw2026"
+    skip_unknown_fields: true
+    format: "json_each_row"
+    encoding:
+      timestamp_format: "rfc3339"
+    batch:
+      max_events: 100
+      timeout_secs: 5
+    buffer:
+      type: "disk"
+      max_size: 268435488
+      when_full: "block"
