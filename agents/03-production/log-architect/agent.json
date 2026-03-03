@@ -1,0 +1,7 @@
+{
+  "id": "log-architect",
+  "name": "Log Architect",
+  "type": "static",
+  "description": "Развёртывание Vector, схемы ClickHouse и дашборда Grafana для техжурнала 1С",
+  "entrypoint": "scripts/install.sh"
+}
