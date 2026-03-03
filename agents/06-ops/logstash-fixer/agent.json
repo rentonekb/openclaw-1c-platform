@@ -1,0 +1,7 @@
+{
+  "id": "logstash-fixer",
+  "name": "Logstash Fixer",
+  "type": "static",
+  "description": "Диагностика и восстановление Logstash: проверка конфига beats input, перезапуск, верификация порта 5044",
+  "entrypoint": "scripts/fix.sh"
+}
