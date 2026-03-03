@@ -8,6 +8,7 @@
       "name": "Подготовка системы",
       "order": 0,
       "agents": [
+        {"id":"infra-installer","source":"agents/01-infra/infra-installer","type":"static"},
         {
           "id": "docker-installer",
           "source": "agents/00-system/docker-installer",
@@ -16,6 +17,11 @@
         {
           "id": "system-setup",
           "source": "agents/00-system/system-setup",
+          "type": "static"
+        },
+        {
+          "id": "portainer-installer",
+          "source": "agents/00-system/portainer-installer",
           "type": "static"
         },
         {
@@ -34,6 +40,7 @@
       "name": "Инфраструктура",
       "order": 1,
       "agents": [
+        {"id":"infra-installer","source":"agents/01-infra/infra-installer","type":"static"},
         {
           "id": "git-coordinator",
           "template": "infrastructure-agent",
@@ -109,6 +116,7 @@
       "name": "DevOps",
       "order": 2,
       "agents": [
+        {"id":"infra-installer","source":"agents/01-infra/infra-installer","type":"static"},
         {
           "id": "cicd-coordinator",
           "template": "devops-agent",
@@ -140,6 +148,7 @@
       "name": "Продакшн",
       "order": 3,
       "agents": [
+        {"id":"infra-installer","source":"agents/01-infra/infra-installer","type":"static"},
         {
           "id": "log-architect",
           "template": "production-agent",
@@ -166,11 +175,11 @@
         },
         {
           "id": "hardware-monitor",
-          "template": "production-agent",
-          "params": {
-            "name": "Hardware Monitor",
-            "description": "Мониторинг железа"
-          }
+            "template": "production-agent",
+            "params": {
+              "name": "Hardware Monitor",
+              "description": "Мониторинг железа"
+            }
         },
         {
           "id": "correlation-engine",
@@ -211,6 +220,7 @@
       "name": "AI и UI",
       "order": 4,
       "agents": [
+        {"id":"infra-installer","source":"agents/01-infra/infra-installer","type":"static"},
         {
           "id": "ml-predictor",
           "template": "aiops-agent",
@@ -234,6 +244,7 @@
       "name": "QA",
       "order": 5,
       "agents": [
+        {"id":"infra-installer","source":"agents/01-infra/infra-installer","type":"static"},
         {
           "id": "config-validator",
           "template": "qa-agent",
@@ -289,6 +300,7 @@
       "name": "Интерфейс",
       "order": 6,
       "agents": [
+        {"id":"infra-installer","source":"agents/01-infra/infra-installer","type":"static"},
         {
           "id": "telegram-coordinator",
           "template": "interface-agent",

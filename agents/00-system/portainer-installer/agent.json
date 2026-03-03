@@ -1,0 +1,7 @@
+{
+  "id": "portainer-installer",
+  "name": "Portainer Installer",
+  "type": "static",
+  "description": "Установка и запуск Portainer CE",
+  "entrypoint": "install.sh"
+}

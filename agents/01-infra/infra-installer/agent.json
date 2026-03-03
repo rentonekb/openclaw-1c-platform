@@ -1,0 +1,7 @@
+{
+  "id": "infra-installer",
+  "name": "Infrastructure Installer",
+  "type": "static",
+  "description": "Развёртывание ClickHouse, Grafana, PostgreSQL, GitLab, SonarQube, Nexus",
+  "entrypoint": "install.sh"
+}
