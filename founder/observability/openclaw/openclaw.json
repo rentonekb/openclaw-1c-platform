@@ -1,0 +1,126 @@
+{
+  "wizard": {
+    "lastRunAt": "2026-03-02T05:02:39.360Z",
+    "lastRunVersion": "2026.2.26",
+    "lastRunCommand": "onboard",
+    "lastRunMode": "local"
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "gigachat": {
+        "baseUrl": "http://127.0.0.1:8443",
+        "apiKey": "dummy",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "GigaChat",
+            "name": "GigaChat (Custom Provider)",
+            "reasoning": false,
+            "input": ["text"],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 131072,
+            "maxTokens": 4096
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "gigachat/GigaChat"
+      },
+      "models": {
+        "gigachat/GigaChat": {
+          "alias": "sber"
+        }
+      },
+      "workspace": "/root/.openclaw/workspace",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    },
+    "list": [
+      { "id": "orchestrator-main", "default": true, "workspace": "/root/.openclaw/agents/orchestrator-main" },
+
+      { "id": "pipeline-integrator", "workspace": "/root/.openclaw/agents/pipeline-integrator" },
+      { "id": "1c-performance-analytics", "workspace": "/root/.openclaw/agents/1c-performance-analytics" },
+      { "id": "1c-lock-analytics", "workspace": "/root/.openclaw/agents/1c-lock-analytics" },
+      { "id": "1c-error-analytics", "workspace": "/root/.openclaw/agents/1c-error-analytics" },
+      { "id": "infra-host-analytics", "workspace": "/root/.openclaw/agents/infra-host-analytics" },
+
+      { "id": "github-committer", "workspace": "/root/.openclaw/agents/github-committer" },
+      { "id": "github-reviewer", "workspace": "/root/.openclaw/agents/github-reviewer" },
+
+      { "id": "config-tester", "workspace": "/root/.openclaw/agents/config-tester" },
+      { "id": "scenario-tester", "workspace": "/root/.openclaw/agents/scenario-tester" },
+
+      { "id": "root-cause-advisor", "workspace": "/root/.openclaw/agents/root-cause-advisor" }
+    ]
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "8700164293:AAGN2_VmK3YGdl61iJ17Yfrf4sxpJSqVisA",
+      "groupPolicy": "allowlist",
+      "streaming": "off"
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "8fc3c159e45a6c583ad819e4cb9c2aca335694e60a88855b"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "nodes": {
+      "denyCommands": [
+        "camera.snap",
+        "camera.clip",
+        "screen.record",
+        "calendar.add",
+        "contacts.add",
+        "reminders.add"
+      ]
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": {
+        "enabled": true
+      }
+    }
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.2.26",
+    "lastTouchedAt": "2026-03-02T05:02:39.383Z"
+  }
+}

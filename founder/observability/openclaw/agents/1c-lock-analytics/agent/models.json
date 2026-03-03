@@ -1,0 +1,28 @@
+{
+  "providers": {
+    "gigachat": {
+      "baseUrl": "http://127.0.0.1:8443",
+      "apiKey": "dummy",
+      "api": "openai-completions",
+      "models": [
+        {
+          "id": "GigaChat",
+          "name": "GigaChat (Custom Provider)",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 131072,
+          "maxTokens": 4096,
+          "api": "openai-completions"
+        }
+      ]
+    }
+  }
+}
