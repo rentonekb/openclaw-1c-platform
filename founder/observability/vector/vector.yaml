@@ -1,0 +1,104 @@
+sources:
+  filebeat_in:
+    type: logstash
+    address: 0.0.0.0:5044
+
+transforms:
+  parse_1c:
+    type: remap
+    inputs:
+      - filebeat_in
+    source: |
+      .raw = string!(.message)
+      parsed, err = parse_json(.raw)
+
+      if err != null {
+        .ts          = now()
+        .level       = "TRACE"
+        .event       = "UNKNOWN"
+        .process     = ""
+        .p_id        = 0
+        .t_id        = 0
+        .session     = 0
+        .usr         = ""
+        .db          = ""
+        .duration    = 0
+        .memory      = 0
+        .memory_peak = 0
+        .sql         = ""
+        .context     = ""
+        .descr       = ""
+        .host        = "unknown"
+        .log_file    = ""
+      } else {
+        .ts          = parse_timestamp!(parsed.time, "%Y-%m-%dT%H:%M:%S%.fZ")
+        .level       = upcase(to_string(parsed.level) ?? "TRACE")
+        .event       = upcase(to_string(parsed.name) ?? "UNKNOWN")
+        .process     = to_string(parsed.process) ?? ""
+        .p_id        = to_int(parsed.p_id) ?? 0
+        .t_id        = to_int(parsed.t_id) ?? 0
+        .session     = to_int(parsed.Session) ?? 0
+        .usr         = to_string(parsed.Usr) ?? ""
+        .db          = to_string(parsed.IB) ?? ""
+        .duration    = to_int(parsed.Duration) ?? 0
+        .memory      = to_int(parsed.Memory) ?? 0
+        .memory_peak = to_int(parsed.MemoryPeak) ?? 0
+        .sql         = to_string(parsed.Sql) ?? ""
+        .context     = to_string(parsed.Context) ?? ""
+        .descr       = to_string(parsed.Descr) ?? ""
+
+        # host приходит как JSON-строка вида {"name":"S2019"}
+        host_json, host_err = parse_json(to_string(.host) ?? "")
+
+        if host_err == null {
+          host_name = to_string(host_json.name) ?? "unknown"
+        } else {
+          host_name = "unknown"
+        end
+
+        log_path  = to_string(.log.file.path) ?? ""
+
+        .host     = host_name
+        .log_file = log_path
+      end
+
+      . = {
+        "host":        .host,
+        "log_file":    .log_file,
+        "ts":          .ts,
+        "level":       .level,
+        "event":       .event,
+        "process":     .process,
+        "p_id":        .p_id,
+        "t_id":        .t_id,
+        "session":     .session,
+        "usr":         .usr,
+        "db":          .db,
+        "duration":    .duration,
+        "memory":      .memory,
+        "memory_peak": .memory_peak,
+        "sql":         .sql,
+        "context":     .context,
+        "descr":       .descr,
+        "raw":         .raw,
+      }
+
+sinks:
+  clickhouse_out:
+    type: clickhouse
+    inputs:
+      - parse_1c
+    endpoint: http://192.168.88.36:8123
+    database: openclaw
+    table: techlog_1c
+    auth:
+      strategy: basic
+      user: openclaw
+      password: openclaw2026
+    batch:
+      max_bytes: 10485760
+      timeout_secs: 5
+    buffer:
+      type: disk
+      max_size: 268435488
+      when_full: block
