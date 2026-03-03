@@ -232,22 +232,48 @@ logging.files:
   keepfiles: 7
 FILEBEAT
 
-  cat > /opt/openclaw/output/windows-configs/logcfg.xml << 'LOGCFG'
-<?xml version="1.0" encoding="UTF-8"?>
-g xmlns="http://v8.1c.ru/v8/tech-log">
-  og location="D:\1c_logs\err_json"
-       history="24"
-       format="json"
-       placement="flat"
-       rotation="size"
-       rotationsize="100M">
-    <event>
-      <ne property="name" value=""/>
-    </event>
-    <property name="all"/>
-  </log>
-</config>
-LOGCFG
+  python3 -c "
+lines = [
+    '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n',
+    '<' + 'config xmlns=\"http://v8.1c.ru/v8/tech-log\">\n',
+    '  <' + 'log location=\"D:\\\\1c_logs\\\\err_json\"\n',
+    '       history=\"24\"\n',
+    '       format=\"json\"\n',
+    '       placement=\"flat\"\n',
+    '       rotation=\"size\"\n',
+    '       rotationsize=\"100M\">\n',
+    '    <' + 'event>\n',
+    '      <eq property=\"name\" value=\"EXCP\"/>\n',
+    '      <property name=\"all\"/>\n',
+    '    </' + 'event>\n',
+    '    <' + 'event>\n',
+    '      <eq property=\"name\" value=\"TLOCK\"/>\n',
+    '      <property name=\"all\"/>\n',
+    '    </' + 'event>\n',
+    '    <' + 'event>\n',
+    '      <eq property=\"name\" value=\"TTIMEOUT\"/>\n',
+    '      <property name=\"all\"/>\n',
+    '    </' + 'event>\n',
+    '    <' + 'event>\n',
+    '      <eq property=\"name\" value=\"DEADLOCK\"/>\n',
+    '      <property name=\"all\"/>\n',
+    '    </' + 'event>\n',
+    '    <' + 'event>\n',
+    '      <eq property=\"name\" value=\"DBMSSQL\"/>\n',
+    '      <gt property=\"Duration\" value=\"3000000\"/>\n',
+    '      <property name=\"all\"/>\n',
+    '    </' + 'event>\n',
+    '    <' + 'event>\n',
+    '      <eq property=\"name\" value=\"CALL\"/>\n',
+    '      <gt property=\"Duration\" value=\"3000000\"/>\n',
+    '      <property name=\"all\"/>\n',
+    '    </' + 'event>\n',
+    '  </' + 'log>\n',
+    '</' + 'config>\n',
+]
+with open('/opt/openclaw/output/windows-configs/logcfg.xml', 'w') as f:
+    f.writelines(lines)
+" 
 
   echo "[log-architect] Windows configs generated:"
   echo "  /opt/openclaw/output/windows-configs/filebeat.yml"

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+g xmlns="http://v8.1c.ru/v8/tech-log">
+  og location="D:\1c_logs\err_json"
+       history="24"
+       format="json"
+       placement="flat"
+       rotation="size"
+       rotationsize="100M">
+
+    <event>
+      <eq property="name" value="EXCP"/>
+      <property name="all"/>
+    </event>
+
+    <event>
+      <eq property="name" value="TLOCK"/>
+      <property name="all"/>
+    </event>
+
+    <event>
+      <eq property="name" value="TTIMEOUT"/>
+      <property name="all"/>
+    </event>
+
+    <event>
+      <eq property="name" value="DEADLOCK"/>
+      <property name="all"/>
+    </event>
+
+    <event>
+      <eq property="name" value="DBMSSQL"/>
+      <gt property="Duration" value="3000000"/>
+      <property name="all"/>
+    </event>
+
+    <event>
+      <eq property="name" value="CALL"/>
+      <gt property="Duration" value="3000000"/>
+      <property name="all"/>
+    </event>
+
+  </log>
+</config>
