@@ -268,11 +268,8 @@
         },
         {
           "id": "config-validator",
-          "template": "qa-agent",
-          "params": {
-            "name": "Config Validator",
-            "description": "Валидация конфигураций"
-          }
+          "source": "agents/05-qa/config-validator",
+          "type": "static"
         },
         {
           "id": "output-verifier",

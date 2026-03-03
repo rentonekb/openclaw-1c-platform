@@ -1,0 +1,7 @@
+{
+  "id": "config-validator",
+  "name": "Config Validator",
+  "type": "static",
+  "description": "Валидация logcfg.xml, filebeat.yml, Vector, ClickHouse, Grafana",
+  "entrypoint": "scripts/validate.sh"
+}
