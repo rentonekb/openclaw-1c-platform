@@ -313,6 +313,19 @@
         }
       ]
     },
+        {
+                "id": "phase-6-ops",
+                "name": "Операционные исправления",
+                "order": 5.5,
+                "agents": [
+                          {
+                                      "id": "logstash-fixer",
+                                      "source": "agents/06-ops/logstash-fixer",
+                                      "type": "static"
+                                    }
+                        ],
+                "gates": ["logstash http://localhost:5044"]
+              },
     {
       "id": "phase-6-interface",
       "name": "Интерфейс",
